@@ -1,0 +1,27 @@
+Group SmartHome "Розумний будинок"
+Group Lights "Освітлення" (SmartHome)
+Group Climate "Клімат" (SmartHome)
+Group Sensors "Датчики" (SmartHome)
+Group Appliances "Прилади" (SmartHome)
+Group LivingRoom "Вітальня" (SmartHome)
+Group Bedroom "Спальня" (SmartHome)
+Group Kitchen "Кухня" (SmartHome)
+Switch LivingRoomLight "Світло у вітальні [%s]" (Lights, LivingRoom) {channel="mqtt:topic:localBroker:living_room_light:power"}
+Dimmer LivingRoomBrightness "Яскравість вітальні [%d %%]" (Lights, LivingRoom) {channel="mqtt:topic:localBroker:living_room_light:brightness"}
+Switch BedroomLight "Світло у спальні [%s]" (Lights, Bedroom) {channel="mqtt:topic:localBroker:bedroom_light:power"}
+Dimmer BedroomBrightness "Яскравість спальні [%d %%]" (Lights, Bedroom) {channel="mqtt:topic:localBroker:bedroom_light:brightness"}
+Switch KitchenLight "Світло на кухні [%s]" (Lights, Kitchen) {channel="mqtt:topic:localBroker:kitchen_light:power"}
+Dimmer KitchenBrightness "Яскравість кухні [%d %%]" (Lights, Kitchen) {channel="mqtt:topic:localBroker:kitchen_light:brightness"}
+Dimmer KitchenDimmer "Димер кухні [%d %%]" (Lights, Kitchen) {channel="mqtt:topic:localBroker:kitchen_dimmer:level"}
+Number CurrentTemperature "Температура [%.1f °C]" (Climate, LivingRoom) {channel="mqtt:topic:localBroker:thermostat:current_temp"}
+Number TargetTemperature "Цільова температура [%.1f °C]" (Climate, LivingRoom) {channel="mqtt:topic:localBroker:thermostat:target_temp"}
+Switch Heating "Обігрів [%s]" (Climate, LivingRoom) {channel="mqtt:topic:localBroker:thermostat:heating"}
+Switch MotionDetector "Датчик руху [%s]" (Sensors) {channel="mqtt:topic:localBroker:motion_sensor:motion"}
+Contact DoorSensor "Датчик дверей [%s]" (Sensors) {channel="mqtt:topic:localBroker:door_sensor:state"}
+Switch SmartSocket "Розумна розетка [%s]" (Appliances, Kitchen) {channel="mqtt:topic:localBroker:smart_socket:power"}
+Number SocketConsumption "Споживання [%.0f Вт]" (Appliances, Kitchen) {channel="mqtt:topic:localBroker:smart_socket:consumption"}
+Switch AllLights "Все освітлення [%s]" (SmartHome)
+String HomeMode "Режим будинку [%s]" (SmartHome)
+Number ComfortIndex "Індекс комфорту [%.1f/10]" (SmartHome)
+DateTime LastActivity "Остання активність" (SmartHome)
+String SceneMode "Сценарій [%s]" (SmartHome)

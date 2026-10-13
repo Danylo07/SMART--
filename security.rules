@@ -1,0 +1,30 @@
+rule "Відстеження активності"
+when Item MotionDetector changed to ON or Item DoorSensor changed
+then
+ LastActivity.postUpdate(new DateTimeType())
+ if (HomeMode.state == "AWAY" && MotionDetector.state == ON) { HomeMode.postUpdate("HOME"); TargetTemperature.sendCommand(21) }
+ logInfo("Security", "Активність: " + triggeringItem.name)
+end
+rule "Режим відсутності"
+when Time cron "0 */15 * * * ?"
+then
+ if (LastActivity.state instanceof DateTimeType) {
+  val mins = java.time.Duration.between((LastActivity.state as DateTimeType).zonedDateTime, now).toMinutes()
+  if (mins > 120 && HomeMode.state != "AWAY") { HomeMode.postUpdate("AWAY"); AllLights.sendCommand(OFF); TargetTemperature.sendCommand(18); logInfo("Security", "Увімкнено AWAY після " + mins + " хв без активності") }
+ }
+end
+rule "Контроль дверей"
+when Item DoorSensor changed
+then
+ if (DoorSensor.state.toString == "OPEN" && HomeMode.state == "AWAY") { logWarn("Security", "Двері відчинено в режимі AWAY"); AllLights.sendCommand(ON); LivingRoomBrightness.sendCommand(100) }
+ if (DoorSensor.state.toString == "OPEN") createTimer(now.plusMinutes(5), [ | if (DoorSensor.state.toString == "OPEN") logWarn("Security", "Двері відчинені більше 5 хвилин") ])
+end
+rule "Енергомоніторинг"
+when Item SocketConsumption received update
+then
+ if (SocketConsumption.state instanceof Number) {
+  val w = (SocketConsumption.state as Number).doubleValue
+  if (w > 150) logInfo("Energy", "Високе споживання: " + w + " Вт")
+  if (w > 200) { logWarn("Energy", "Перевищено 200 Вт — вимкнення"); SmartSocket.sendCommand(OFF) }
+ }
+end

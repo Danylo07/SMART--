@@ -1,0 +1,24 @@
+rule "Клімат-контроль та індекс комфорту"
+when Item CurrentTemperature received update or Time cron "0 */10 * * * ?"
+then
+ if (CurrentTemperature.state instanceof Number) {
+  val t = (CurrentTemperature.state as Number).doubleValue
+  val h = now.getHour()
+  var target = 21.0
+  if (h >= 6 && h < 9) target = 22.0
+  else if (h >= 9 && h < 18) target = 20.0
+  else if (h >= 18 && h < 23) target = 22.5
+  else target = 19.0
+  if (HomeMode.state == "AWAY") target = 18.0
+  ComfortIndex.postUpdate(Math.max(0.0, 10.0 - Math.abs(t - target) * 2.0))
+  logInfo("Climate", "Температура=" + t + "°C, рекомендована ціль=" + target + "°C")
+ }
+end
+rule "Аномальна температура"
+when Item CurrentTemperature received update
+then
+ if (CurrentTemperature.state instanceof Number) {
+  val t = (CurrentTemperature.state as Number).doubleValue
+  if (t < 15 || t > 30) logWarn("Climate", "Аномальна температура: " + t + "°C")
+ }
+end

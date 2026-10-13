@@ -1,0 +1,9 @@
+sitemap demo label="Розумний будинок" {
+ Frame label="Огляд" { Text item=HomeMode; Text item=SceneMode; Text item=ComfortIndex; Text item=CurrentTemperature; Text item=LastActivity }
+ Frame label="Швидкі дії" { Switch item=AllLights; Setpoint item=TargetTemperature minValue=16 maxValue=26 step=0.5; Switch item=SmartSocket }
+ Frame label="Вітальня" { Switch item=LivingRoomLight; Slider item=LivingRoomBrightness }
+ Frame label="Спальня" { Switch item=BedroomLight; Slider item=BedroomBrightness }
+ Frame label="Кухня" { Switch item=KitchenLight; Slider item=KitchenBrightness; Slider item=KitchenDimmer }
+ Frame label="Клімат і датчики" { Text item=CurrentTemperature; Setpoint item=TargetTemperature minValue=16 maxValue=26 step=0.5; Switch item=Heating; Switch item=MotionDetector; Text item=DoorSensor; Text item=ComfortIndex }
+ Frame label="Енергоспоживання" { Switch item=SmartSocket; Text item=SocketConsumption }
+}
